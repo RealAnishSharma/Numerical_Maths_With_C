@@ -1,39 +1,65 @@
-//Newton Raphson Method
-//roots of x^3+1.2x^2-4x-4.8=0
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include<conio.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
 
-float f(float x)
+int user_power,i=0,cnt=0,flag=0;
+int coef[10]={0};
+float x1=0,x2=0,t=0;
+float fx1=0,fdx1=0;
+
+void main()
 {
-    //return pow(x,3)+1.2*pow(x,2)-4*x-4.8;
-    return x*log10(x)-1.2;
-}
 
-float df(float x)
-{
-    //return 3*pow(x,2)+2.4*x-4;
-    return x+log10(x);
-}
+    clrscr();
 
-int main()
-{
-    float x0,x1,err,h;
-    int i;
-    printf("Enter the values of x,error\n");
-    scanf(" %f%f",&x0,&err);
+    printf("\n\n\t\t\t PROGRAM FOR NEWTON RAPHSON GENERAL");
 
-    i=1;
-    while(i<1000)
+    printf("\n\n\n\tENTER THE TOTAL NO. OF POWER:::: ");
+    scanf("%d",&user_power);
+
+    for(i=0;i<=user_power;i++)
     {
-        h=f(x0)/df(x0);
-        x1=x0-h;
-
-        printf("%d\t%f\n",i++,x1);
-        if(fabs(h)<err){printf("\n\nSOL is %f",x1);return 0;}
-        else
-            x0=x1;
+        printf("\n\t x^%d::",i);
+        scanf("%d",&coef[i]);
     }
-    printf("Solution does not converge");
-    return 0;
+
+    printf("\n");
+
+    printf("\n\t THE POLYNOMIAL IS ::: ");
+    for(i=user_power;i>=0;i--)//printing coeff.
+    {
+        printf(" %dx^%d",coef[i],i);
+    }
+
+    printf("\n\tINTIAL X1---->");
+    scanf("%f",&x1);
+
+    printf("\n ******************************************************");
+    printf("\n ITERATION    X1    FX1    F'X1  ");
+    printf("\n **********************************************************");
+
+    do
+    {
+            cnt++;
+            fx1=fdx1=0;
+            for(i=user_power;i>=1;i--)
+            {
+                fx1+=coef[i] * (pow(x1,i)) ;
+            }
+            fx1+=coef[0];
+            for(i=user_power;i>=0;i--)
+            {
+                fdx1+=coef[i]* (i*pow(x1,(i-1)));
+            }
+            t=x2;
+            x2=(x1-(fx1/fdx1));
+
+            x1=x2;
+
+            printf("\n %d         %.3f  %.3f  %.3f ",cnt,x2,fx1,fdx1);
+
+    }while((fabs(t - x1))>=0.0001);
+    printf("\n\t THE ROOT OF EQUATION IS %f",x2);
+    getch();
 }
